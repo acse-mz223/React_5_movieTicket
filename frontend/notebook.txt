@@ -1,0 +1,16 @@
+Framework:
+    - vite: npm create vite@latest .
+    - other depencency: npm install react-router-dom lucide-react react-hot-toast react-player 
+        - lucide: a set of SVG icons
+        - shadcn: icon
+        - prebuildUI: 现成的ui component
+    - clerk: 用户验证
+问题: 
+1. shadcn安装
+    - 问题: 官网提供的安装步骤是vite-ts的，而我是js
+    - 解决: youtube搜视频解决
+2. sheet的使用
+    - 问题: 需要创建隐藏式menu，需要手写代码
+    - 解决: 想起之前用过shadcn的sheet，因此在官网查找并使用
+3. flex 中元素shrink导致的overflow-x-scroll无效
+    - 解决: 找到flex-shrink-0这个设置并使用
