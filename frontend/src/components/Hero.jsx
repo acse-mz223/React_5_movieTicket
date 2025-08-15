@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 function Hero() {
   return (
     <div className='w-full h-screen bg-[url(./hero.png)] bg-cover bg-center relative before:content-[""] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-gradient-to-r before:from-black/55 before:to-black/20'>
-        <div className='absolute px-5 md:px-40 h-full w-full flex flex-col gap-5 items-center md:items-start justify-end pb-10 md:pb-30'>
+        <div className='absolute px-2 md:px-40 h-full w-full flex flex-col gap-5 items-center md:items-start justify-end pb-5 md:pb-30 '>
             {/* name */}
             <div className='font-bold text-4xl md:text-5xl w-full md:w-2/5  max-md:text-center'>Call me by your name</div>
             {/* info */}

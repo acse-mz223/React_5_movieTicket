@@ -3,6 +3,7 @@ import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowLeftCircleIcon, ArrowRight } from 'lucide-react'
 import Question from '@/components/Question'
+import Titilebar from '@/components/Titilebar'
 
 function MoviesPage() {
   // todo: film info 
@@ -53,6 +54,7 @@ function MoviesPage() {
         </div>
         {/* films */}
         <div className='pt-5 md:pt-10 px-5 md:px-40 w-full'>
+            <div className='pb-2'><Titilebar /></div>
             <div className='font-medium text-xl pb-4'>ALL MOVIES NOW</div>
             <div className='group grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 overflow-shrink-0 gap-y-4'>
                 {info.map((film) => {
@@ -69,6 +71,7 @@ function MoviesPage() {
         </div>    
         {/* question*/}
         <div className='pt-5 md:pt-15 px-5 md:px-40 w-full'>
+            <div className='pb-2'><Titilebar /></div>
             <Question />
         </div>
     </div>

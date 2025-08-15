@@ -4,7 +4,7 @@ import Timetable from './Timetable'
 
 function FeaturedOne({film}) {
   return (
-    <div className='flex flex-row gap-8 md:gap-12 items-start '>
+    <div className='flex flex-col md:flex-row gap-8 md:gap-12 items-start '>
         {/* post */}
         <img src={film.smallpost} className='w-35 h-50 object-cover object-center'></img>
         {/* info */}
@@ -19,7 +19,7 @@ function FeaturedOne({film}) {
                 <div className='text-gray-400 font-light'>{film.duration}</div>
             </div>
             {/* time table */}
-            <Timetable />
+            <Timetable film={film} today={true}/>
         </div>
 
     </div>

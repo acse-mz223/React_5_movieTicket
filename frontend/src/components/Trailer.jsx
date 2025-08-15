@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
+import Titilebar from './Titilebar'
 
 // in order to use shanc dialog, I need to mix TrailerDialog and TrailerOne
 function TrailerOne({film}) {
@@ -73,6 +74,7 @@ function Trailer() {
   // reutrn 
   return (
     <div className='relative pt-5 md:pt-15 w-full'>
+        <div className='px-5 md:px-40 pb-2'><Titilebar /></div>
         <div className='px-5 md:px-40 font-semibold text-xl pb-2 md:pb-4'>FEATURED TRAILERS</div>
         <div className='px-5 md:px-20 pt-5 pb-30 flex flex-row gap-4 md:gap-6 overflow-x-scroll w-full items-center' ref={slideRef}>
             {/* sliders */}
