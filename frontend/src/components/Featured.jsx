@@ -13,7 +13,7 @@ function Featured() {
   smallpost: "all_of_us_strangers_poster_small.webp",
   cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre",
   dates: {
-    "2025-08-14": [
+    "2025-08-16": [
       { time: "13:30", screen: 1 },
       { time: "15:45", screen: 2 },
       { time: "18:00", screen: 3 },
