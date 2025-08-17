@@ -6,8 +6,8 @@ import MovieDetail from "./pages/MovieDetail"
 import SeatSelection from "./pages/SeatSelection"
 import Favourite from "./pages/Favourite"
 import { Toaster } from "react-hot-toast"
-import Mytickets from "./pages/Mytickets"
 import MoviesPage from "./pages/MoviesPage"
+import MyHistory from "./pages/MyHistory"
 
 function App() {
   // admin
@@ -20,7 +20,7 @@ function App() {
         <Route path="/movies" element={<MoviesPage />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/seat/:id/:date" element={<SeatSelection />} />
-        <Route path="/mytickets" element={<Mytickets/>} />
+        <Route path="/history" element={<MyHistory/>} />
         <Route path="/favourite" element={<Favourite/>} />
       </Routes>
       {isAdmin? null : <Footer/>}
