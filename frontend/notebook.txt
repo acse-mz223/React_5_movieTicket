@@ -5,6 +5,37 @@ Framework:
         - shadcn: icon
         - prebuildUI: 现成的ui component
     - clerk: 用户验证
+
+数据结构:
+- film:
+    - id: num
+    - title: str
+    - intro : str
+    - post: str
+    - smallpost: str
+    - duration: str
+    - director: str
+    - cast: str
+    - dates: {  -- 拆成单个model？
+        date: [
+            {time: "13:30", screen: 1 }
+        ]
+    } 
+- seats
+    - row: 16
+    - col: 28
+    - screen: 5
+    - date: "2025-08-17"
+    - time: "10:00"
+    - seat: {   -> 使用harrsh表存储，方便查询
+        A: [
+            {id:"A1", status: "available", type: "standard", price: 10},
+            {id:"A2", status: "booked", type: "wheelchair", price: 5},
+            {id:"A3", status: "none"}
+        ]
+    }
+    - booked: [16*28的array] -> 使用harrsh表存储，方便查询
+
 问题: 
 1. shadcn安装
     - 问题: 官网提供的安装步骤是vite-ts的，而我是js
@@ -14,3 +45,7 @@ Framework:
     - 解决: 想起之前用过shadcn的sheet，因此在官网查找并使用
 3. flex 中元素shrink导致的overflow-x-scroll无效
     - 解决: 找到flex-shrink-0这个设置并使用
+4. 寻找存储座位信息的最好方式
+    - 问题: 需要存储每个座位的信息+座位数多，信息量大，维度多
+    - 解决: 通过hash表+chatgpt+查询pop theathre的信息
+    

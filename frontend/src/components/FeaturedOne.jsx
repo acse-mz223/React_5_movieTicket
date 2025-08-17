@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Timetable from './Timetable'
 
 function FeaturedOne({film}) {
+  let navigate = useNavigate()
   return (
     <div className='flex flex-col md:flex-row gap-8 md:gap-12 items-start '>
         {/* post */}
@@ -10,7 +11,7 @@ function FeaturedOne({film}) {
         {/* info */}
         <div className='flex flex-col items-start gap-3'>
             {/* basic info */}
-            <Link to={`/movie/${1234}`} className='text-2xl'>{film.title}</Link>
+            <div onClick={() => {navigate(`/movie/${1234}`); scrollTo(0,0)}} className='text-2xl cursor-pointer'>{film.title}</div>
             <div className='font-light text-md'>{film.intro}</div>
             <div className='grid grid-cols-1 md:grid-cols-[150px_auto]'>
                 <div>Starring</div>

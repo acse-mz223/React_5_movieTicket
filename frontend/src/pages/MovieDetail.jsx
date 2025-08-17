@@ -1,9 +1,11 @@
 import Timetable from '@/components/Timetable'
 import Titilebar from '@/components/Titilebar'
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function MovieDetail() {
+  // nav
+  let navigate = useNavigate()
   // get the id of the film
   const {id} = useParams()
   console.log("movieDetail_id:", id)
@@ -58,12 +60,10 @@ function MovieDetail() {
             <div className='px-10 md:px-40 grid grid-cols-2 lg:grid-cols-4 gap-5'>
               {recommand.slice(0,4).map((film) => {
                 return (
-                  <Link to={`/movie/${film.id}`}>
-                    <div className='group/one px-2 py-2 flex flex-col items-center cursor-pointer transition-all duration-500'>
+                    <div onClick={() => {navigate(`/movie/${film.id}`); scrollTo(0,0) }} className='group/one px-2 py-2 flex flex-col items-center cursor-pointer transition-all duration-500'>
                         <img className='max-h-[250px] max-w-[160px] object-cover object-center group-hover/one:scale-104 transition-all duration-500' src={film.smallpost}></img>
                         <div className='pt-4 font-semibold text-md text-center'>{film.title.toUpperCase()}</div>
-                    </div>
-                  </Link>                  
+                    </div>              
                 )                
               })
 

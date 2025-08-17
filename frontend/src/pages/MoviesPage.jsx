@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button'
 import React, { useRef } from 'react'
-import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowLeftCircleIcon, ArrowRight } from 'lucide-react'
 import Question from '@/components/Question'
 import Titilebar from '@/components/Titilebar'
+import { useNavigate } from 'react-router-dom'
 
 function MoviesPage() {
+  // nav
+  let navigate = useNavigate()
   // todo: film info 
   let info = [{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./movies2.jpg' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"},{post:'./hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"}]  
   // click slide button 
@@ -40,9 +42,7 @@ function MoviesPage() {
                                     <div className='font-bold text-2xl max-md:text-center'> {film.title.toUpperCase()}</div>
                                     <div className='text-gray-400 max-md:text-center'>Now Showing At Your Local Theater</div>
                                 </div>
-                                <Link to={`/movie/${film.id}`}>
-                                    <Button className="md:px-6 md:py-6 rounded-full md:text-xl flex items-center justify-center">BOOK NOW</Button>
-                                </Link>
+                                <Button onClick={() => {navigate(`/movie/${film.id}`); scrollTo(0,0)}} className="md:px-6 md:py-6 rounded-full md:text-xl flex items-center justify-center">BOOK NOW</Button>
                             </div>
                         </div>
                     )
@@ -59,12 +59,10 @@ function MoviesPage() {
             <div className='group grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 overflow-shrink-0 gap-y-4'>
                 {info.map((film) => {
                     return (
-                            <Link to={`/movie/${film.id}`}>
-                            <div className='group/one px-2 py-2 flex flex-col items-center cursor-pointer group-hover:opacity-30 hover:opacity-100 transition-all duration-500'>
-                                <img className='h-[250px] w-[160px] object-cover object-center group-hover/one:scale-104 transition-all duration-500' src={film.smallpost}></img>
-                                <div className='pt-4 font-semibold text-md text-center'>{film.title.toUpperCase()}</div>
-                            </div>
-                        </Link>
+                        <div onClick={() => {navigate(`/movie/${film.id}`); scrollTo(0,0) }} className='group/one px-2 py-2 flex flex-col items-center cursor-pointer group-hover:opacity-30 hover:opacity-100 transition-all duration-500'>
+                            <img className='h-[250px] w-[160px] object-cover object-center group-hover/one:scale-104 transition-all duration-500' src={film.smallpost}></img>
+                            <div className='pt-4 font-semibold text-md text-center'>{film.title.toUpperCase()}</div>
+                        </div>
                     )
                 })}
             </div>
