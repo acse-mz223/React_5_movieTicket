@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from 'lucide-react'
 import React from 'react'
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // todo: connect background info to here 
 function Hero() {

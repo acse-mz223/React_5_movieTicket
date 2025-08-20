@@ -8,6 +8,10 @@ import Favourite from "./pages/Favourite"
 import { Toaster } from "react-hot-toast"
 import MoviesPage from "./pages/MoviesPage"
 import MyHistory from "./pages/MyHistory"
+import Dashboard from "./pages/admin/Dashboard"
+import DataAnalysis from "./pages/admin/DataAnalysis"
+import Showing from "./pages/admin/Showing"
+import FilmSetting from "./pages/admin/FilmSetting"
 
 function App() {
   // admin
@@ -22,6 +26,13 @@ function App() {
         <Route path="/seat/:id/:date" element={<SeatSelection />} />
         <Route path="/history" element={<MyHistory/>} />
         <Route path="/favourite" element={<Favourite/>} />
+
+        <Route path="/admin/*" element={<Dashboard/>} >
+          <Route index element={<Showing/>} />
+          <Route path="showing" element={<Showing/>} />
+          <Route path="filmsetting" element={<FilmSetting/>} />
+          <Route path="dataanalysis" element={<DataAnalysis/>} />
+        </Route>
       </Routes>
       {isAdmin? null : <Footer/>}
       <Toaster/>

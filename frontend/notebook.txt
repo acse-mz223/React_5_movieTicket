@@ -6,7 +6,28 @@ Framework:
         - prebuildUI: 现成的ui component
     - clerk: 用户验证
 
+install:
+    - frontend/: 
+        - npm init vite@latest .
+        - npm install axios react-router-dom
+        - npm install -D tailwindcss
+    - backend/:   -> it;s env file should store in this file 
+        - npm init -y
+        - npm install express mongoose cors dotenv
+        - npm install cookie-parser
+
+run:
+    - backend: npm run dev <- have to config the command in package.json file
+
 数据结构:
+- user
+    - id: num
+    - history:
+        - ticket_id:
+        - bought_date: "2025-8-16"
+        - showtime_id: -> title+smallpost+date+time+screen
+        - seats: [A1,A2]
+        - price: num
 - film:
     - id: num
     - title: str
@@ -21,20 +42,31 @@ Framework:
             {time: "13:30", screen: 1 }
         ]
     } 
-- seats
+- showtime/场次
     - row: 16
     - col: 28
     - screen: 5
     - date: "2025-08-17"
     - time: "10:00"
     - seat: {   -> 使用harrsh表存储，方便查询
+                                            -- status: available booked none
+                                            -- type: wheelchair super_saver(6.99 红) saver(6.99 绿) regular(8.99 蓝) vip(10.49 粉) 
         A: [
             {id:"A1", status: "available", type: "standard", price: 10},
             {id:"A2", status: "booked", type: "wheelchair", price: 5},
             {id:"A3", status: "none"}
         ]
     }
-    - booked: [16*28的array] -> 使用harrsh表存储，方便查询
+
+API 设计: 
+    - "api/frontend"
+        - "/allmovies" : get all show time 
+        - "/ticket/:id" : get a secific movie timetable
+    - "api/backend"
+        - "/allmovies" : fetch all moveis that can show 
+        - "/setupmovies" : set up show time of a movies
+        - 
+
 
 问题: 
 1. shadcn安装
@@ -48,4 +80,10 @@ Framework:
 4. 寻找存储座位信息的最好方式
     - 问题: 需要存储每个座位的信息+座位数多，信息量大，维度多
     - 解决: 通过hash表+chatgpt+查询pop theathre的信息
-    
+5. route的子页面之间的跳转
+    - 问题: 使用route在父界面中进行子界面之间的跳转
+            <Link to="child1">Child 1</Link>
+            父界面写成这样，则每次点击不同link，最后的url会变成/parent/child1/childX/childXX
+            而不是/parent/child2
+    - 解决: 使用 absolute path
+            <Link to="/parent/child1">Child 1</Link>

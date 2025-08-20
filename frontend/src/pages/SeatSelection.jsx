@@ -116,7 +116,7 @@ function SeatSelection() {
           </div>
           <div className='w-full h-1 pt-3 border-b-1'></div>
           <div className='font-bold text-xl py-2 text-end'>Total amount: {Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100}</div>
-          <Button disabled={Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100 === 0} className='ml-auto font-bold text-xl py-2 w-35 h-10'>CHECK OUT</Button>
+          <Button disabled={Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100 === 0} className='ml-auto font-bold text-xl py-2 w-35 h-10 cursor-pointer'>CHECK OUT</Button>
         </div>
       </div>
     </div>
