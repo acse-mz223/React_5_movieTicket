@@ -11,7 +11,7 @@ install:
         - npm init vite@latest .
         - npm install axios react-router-dom
         - npm install -D tailwindcss
-    - backend/:   -> it;s env file should store in this file 
+    - backend/:   -> its env file should store in this file 
         - npm init -y
         - npm install express mongoose cors dotenv
         - npm install cookie-parser
@@ -32,16 +32,20 @@ run:
     - id: num
     - title: str
     - intro : str
-    - post: str
-    - smallpost: str
-    - duration: str
+    - horizontalPostURL: str
+    - verticalPostURL: str
+    - duration: num
     - director: str
-    - cast: str
-    - dates: {  -- 拆成单个model？
-        date: [
-            {time: "13:30", screen: 1 }
-        ]
+    - cast: [str]
+    - showtime: {  -- 拆成单个model？
+        date
     } 
+- date:
+    - dare: string 
+    - shwotime: [
+        showtime
+    ]
+
 - showtime/场次
     - row: 16
     - col: 28
@@ -66,7 +70,7 @@ API 设计:
         - "/allmovies" : fetch all moveis that can show 
         - "/setupmovies" : set up show time of a movies
         - 
-
+# 前端调用api时可以在vite.config.js中设置将/api自动识别为port号
 
 问题: 
 1. shadcn安装
@@ -87,3 +91,6 @@ API 设计:
             而不是/parent/child2
     - 解决: 使用 absolute path
             <Link to="/parent/child1">Child 1</Link>
+6. 后端访问
+    - 问题：无论从前端还是postman都无法访问后端，报错localhost refused to connect
+    - 解决：port 从5000改成4000， 因为  Some ports (like 5000, 3306, 1433, etc.) are commonly used by databases or system services, so firewalls/antivirus may block them by default.          
