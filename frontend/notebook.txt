@@ -52,15 +52,20 @@ run:
     - screen: 5
     - date: "2025-08-17"
     - time: "10:00"
-    - seat: {   -> 使用harrsh表存储，方便查询
-                                            -- status: available booked none
-                                            -- type: wheelchair super_saver(6.99 红) saver(6.99 绿) regular(8.99 蓝) vip(10.49 粉) 
-        A: [
-            {id:"A1", status: "available", type: "standard", price: 10},
-            {id:"A2", status: "booked", type: "wheelchair", price: 5},
-            {id:"A3", status: "none"}
-        ]
-    }
+    - bookedseat: [string]
+
+- seatmap/座位图
+    - screen: [Number]
+    - seat:
+        {   -> 使用harrsh表存储，方便查询
+                                                -- status: available booked none
+                                                -- type: wheelchair super_saver(6.99 红) saver(6.99 绿) regular(8.99 蓝) vip(10.49 粉) 
+            A: [
+                {id:"A1", status: "available", type: "standard", price: 10},
+                {id:"A2", status: "booked", type: "wheelchair", price: 5},
+                {id:"A3", status: "none"}
+            ]
+        }    
 
 API 设计: 
     - "api/frontend"
@@ -94,3 +99,22 @@ API 设计:
 6. 后端访问
     - 问题：无论从前端还是postman都无法访问后端，报错localhost refused to connect
     - 解决：port 从5000改成4000， 因为  Some ports (like 5000, 3306, 1433, etc.) are commonly used by databases or system services, so firewalls/antivirus may block them by default.          
+7. 数据存储问题
+    - 问题: 在一个film新的date被创建的时候，同时被存入的showtime不会被保存。但是次date下的第二次的showtime会被保存
+    - 代码：
+        let targetDate = filmresult.date.find(d => d.date === date)
+        if (!targetDate) {
+            targetDate = { date: date, showtime: [] }
+            filmresult.date.push(targetDate)
+        }
+        targetDate.showtime.push(newshowtime._id)
+        await filmresult.save()        
+    - 原因: 因为targetDate虽然是被push到了filresult里面，local reference (targetDate) is still the plain object — not the actual subdocument inside filmresult. So when you do targetDate.showtime.push(...), you’re modifying the wrong object.
+    - 解决:
+        let targetDate = filmresult.date.find(d => d.date === date)
+        if (!targetDate) {
+            targetDate = { date: date, showtime: [newshowtime._id] }
+            filmresult.date.push(targetDate)
+        }
+        else  targetDate.showtime.push(newshowtime._id) 
+        await filmresult.save()    

@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 const dateSchema = new Schema({
-    date: String,
+    date: { type: String, required: true },
     showtime: [{
         type: Schema.Types.ObjectId,
         ref: "Showtime"
@@ -10,10 +10,12 @@ const dateSchema = new Schema({
 
 
 const filmShcema = new Schema({
-    title: String,
+    filmid: { type: Number, required: true, unique: true},
+    title: { type: String, required: true },
     intro: String,
-    horizontalPostURL: String,
-    verticalPostURL: String,
+    release: String,
+    horizontalPostURL: { type: String, required: true },
+    verticalPostURL: { type: String, required: true },
     duration: Number,
     cast: [String],
     date: [dateSchema]
