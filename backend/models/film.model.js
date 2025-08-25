@@ -14,6 +14,10 @@ const filmShcema = new Schema({
     title: { type: String, required: true },
     intro: String,
     release: String,
+    genres: [{
+        id: Number,
+        name: String
+    }],
     horizontalPostURL: { type: String, required: true },
     verticalPostURL: { type: String, required: true },
     duration: Number,

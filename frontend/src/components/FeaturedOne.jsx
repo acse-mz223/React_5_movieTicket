@@ -1,13 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Timetable from './Timetable'
+import { ORG_IMG_URL } from '@/utils/constants'
 
 function FeaturedOne({film}) {
   let navigate = useNavigate()
   return (
     <div className='flex flex-col md:flex-row gap-8 md:gap-12 items-start '>
         {/* post */}
-        <img src={film.smallpost} className='w-35 h-50 object-cover object-center'></img>
+        <img src={ORG_IMG_URL + film.verticalPostURL} className='w-35 h-50 object-cover object-center'></img>
         {/* info */}
         <div className='flex flex-col items-start gap-3'>
             {/* basic info */}

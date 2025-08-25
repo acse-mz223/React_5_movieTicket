@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from '@/components/ui/separator'
-import TimetableBackend from '@/components/TimetableBackend'
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import { ORG_IMG_URL, W185_IMG_URL } from '@/utils/constants'

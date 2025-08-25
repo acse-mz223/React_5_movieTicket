@@ -1,4 +1,5 @@
 import Film from "../models/film.model.js";
+import Global from "../models/global.model.js";
 import Showtime from "../models/showtime.model.js";
 import tmdbFetchFunc from "../service/tmdb.service.js";
 import { shwotimetodatetime } from "../utils/showtimetodatetime.js";
@@ -7,7 +8,7 @@ export async function fetchAllmovies(req, res) {
     try{
         // fetch all playging moveis 
         const result = await tmdbFetchFunc('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1')
-        console.log("fetch all playing films successfully")
+        console.log("fetch all playing films from tmdb successfully")
         res.status(201).json({success: true, content: result.results})
     } catch(error){
         console.log("fatch all playing films failed")
@@ -34,6 +35,7 @@ export async function addShowtime(req, res) {
                 title: filmdetail.title,
                 intro: filmdetail.overview,
                 release: filmdetail.release_date,
+                genres: filmdetail.genres,
                 horizontalPostURL: filmdetail.poster_path,
                 verticalPostURL: filmdetail.poster_path,
                 duration: filmdetail.runtime,
@@ -87,6 +89,37 @@ export async function fetchMovieDetailById(req, res) {
     } catch(error){
         console.log("fetch film detail from db failed:", error)
         res.status(500).json({success:false, message:"Internal server: fetchMovieDetailById error"})
+    }
+}
+
+export async function fetchAllShowingMovieFromDB(req, res){
+    try{
+        // fetch film info
+        const result = await Film.find().populate("date.showtime")
+        console.log("fetchAllShowingMovieFromDB successfully")
+        // fetch hero db
+        const hero = await Global.find({key: "hero"})
+        console.log("fetch global hero successfully!")
+        // return 
+        res.status(201).json({success: true, content: result, hero: hero})        
+    }catch(error){
+        console.log("fetch all film from db failed:", error)
+        res.status(500).json({success:false, message:"Internal server: fetchAllShowingMovieFromDB error"})        
+    }
+}
+
+export async function heroSetting(req, res) {
+    try{
+        // get params
+        const {filmid} = req.body
+        // post to db
+        const result = await Global.updateOne({key: "hero"}, {value: filmid}, { upsert: true })
+        // return 
+        console.log("update global hero successfully!")
+        res.status(201).json({success: true}) 
+    }catch(error){
+        console.log("update hero failed:", error)
+        res.status(500).json({success:false, message:"Internal server: heroSetting error"})        
     }
 }
 
