@@ -3,6 +3,7 @@ import { connectToDb } from './config/db.js'
 import { PORT } from './config/envVars.js'
 import cookieParser from 'cookie-parser'
 import backendRouter from './routes.js/backend.js'
+import frontendRouter from './routes.js/frontend.js'
 
 const app = express()
 
@@ -11,6 +12,7 @@ app.use(cookieParser()) // parse cookie -> can get the info in req.cookies
 
 // app.use("/api/frontend", )
 app.use("/api/backend", backendRouter)
+app.use("/api/frontend", frontendRouter)
 
 
 // listen

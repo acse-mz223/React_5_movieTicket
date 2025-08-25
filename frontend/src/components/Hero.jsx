@@ -1,3 +1,4 @@
+import { ORG_IMG_URL } from '@/utils/constants'
 import { ArrowRightIcon } from 'lucide-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +8,9 @@ function Hero({film}) {
   let filmdetail = film? film[0]: null
   let navigate = useNavigate()
   return (
-    <div className='w-full h-screen bg-[url(./hero.png)] bg-cover bg-center relative before:content-[""] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-gradient-to-r before:from-black/55 before:to-black/20'>
+    <div className={`w-full h-screen bg-cover bg-center relative `} >
+        <img className='absolute top-0 left-0 w-full h-full object-cover object-center' src={ORG_IMG_URL+ filmdetail?.horizontalPostURL}></img>
+        <div className='content-[""] absolute top-0 left-0 w-full h-full bg-gradient-to-r from-black/55 to-black/20'></div>
         <div className='absolute px-2 md:px-40 h-full w-full flex flex-col gap-5 items-center md:items-start justify-end pb-5 md:pb-30 '>
             {/* name */}
             <div className='font-bold text-4xl md:text-5xl w-full md:w-2/5  max-md:text-center'>{filmdetail?.title}</div>

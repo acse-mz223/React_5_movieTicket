@@ -27,16 +27,17 @@ export async function addShowtime(req, res) {
         let filmresult = await Film.findOne({filmid: filmId})
         // if not : add film
         if (!filmresult) {
-            // get detail
+            // get detail + img
             const filmdetail = await tmdbFetchFunc(`https://api.themoviedb.org/3/movie/${filmId}?language=en-US`)
-            // save
+            const filmImg = await tmdbFetchFunc(`https://api.themoviedb.org/3/movie/${filmId}/images?include_image_language=en`)
+            // save  -> filmImg.backdrops[0].file_path
             filmresult = new Film({
                 filmid: filmId,
                 title: filmdetail.title,
                 intro: filmdetail.overview,
                 release: filmdetail.release_date,
                 genres: filmdetail.genres,
-                horizontalPostURL: filmdetail.poster_path,
+                horizontalPostURL: filmImg.backdrops[0]?.file_path || filmdetail.poster_path,
                 verticalPostURL: filmdetail.poster_path,
                 duration: filmdetail.runtime,
             })
