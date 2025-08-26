@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<MoviesPage />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
-        <Route path="/seat/:id/:date" element={<SeatSelection />} />
+        <Route path="/seat/:showtimeid" element={<SeatSelection />} />
         <Route path="/history" element={<MyHistory/>} />
         <Route path="/favourite" element={<Favourite/>} />
 

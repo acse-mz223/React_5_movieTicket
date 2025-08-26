@@ -29,7 +29,7 @@ function Timetable({film, today=false}) {
                                 // iterate time 
                                 date.showtime.map((slot) => {
                                     return (
-                                        <div onClick={() => {navigate(`/seat/${film.filmid}/${date}`) ;scrollTo(0,0)}} className='w-[150px] h-[120px] border-1 border-gray-400 hover:border-white p-2 flex flex-col justify-between cursor-pointer transition-all rounded-sm'>
+                                        <div onClick={() => {navigate(`/seat/${slot._id}`) ;scrollTo(0,0)}} className='w-[150px] h-[120px] border-1 border-gray-400 hover:border-white p-2 flex flex-col justify-between cursor-pointer transition-all rounded-sm'>
                                             <div className='flex flex-col gap-1'>
                                                 <div>{slot.time}-<p className='text-gray-500 font-extralight text-sm inline'>{calcEndTime(slot['time'], film.duration)}</p></div>
                                                 <div className='text-gray-500 font-extralight text-xs'>Screen {slot.screen}</div>

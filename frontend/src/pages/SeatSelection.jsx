@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
+import { ORG_IMG_URL } from '@/utils/constants'
 import { calcEndTime, formatDateShort, getWeekday } from '@/utils/dateConvert'
 import { seats } from '@/utils/theatre_seat_map'
+import axios from 'axios'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -10,10 +12,23 @@ function SeatSelection() {
   // def
   const [selectedseat, setselectedSeat] = useState([])   // [id, type, price]
   const [seatNumber, setSeatNumber] = useState(1)
+  const [seatInfo, setSeatInfo] = useState()
+  console.log("SeatInfo:", seatInfo)
   // params
-  const {id, date} = useParams()
-  // get 
-  let film = {id:1234, post:'/hero.png' , title: 'call me by your name', duration: '120', 'intro': "From New Line Cinema and Zach Cregger, the wholly original mind behind Barbarian, comes a new mystery/ thriller: Weapons.", director: "sefafserf sdfd", smallpost: "/all_of_us_strangers_poster_small.webp", cast: "dfs dfdsv sfrd, gftg wrw, hgfds ytre"}
+  const {showtimeid} = useParams()
+  // fetch 
+  useEffect(() =>{
+    async function fetchShowtimeByShowtimeId() {
+      try{
+        const result = await axios.get(`/api/frontend/showtime/${showtimeid}`)
+        setSeatInfo(result.data.content)
+      } catch(error){
+        console.log("fetch showtime by showtime id failed:", error)
+      }
+    }
+    fetchShowtimeByShowtimeId()
+  },[])
+  // seat map
   let seatMap = seats
   // seat color map
   let BookedColor = {
@@ -57,6 +72,10 @@ function SeatSelection() {
     }
 
   }
+  // check out function
+  async function checkout() {
+    
+  }
   // return 
   return (
     <div className='w-full pt-30'>
@@ -64,11 +83,11 @@ function SeatSelection() {
       <div className='relative px-5 md:px-20 lg:px-40 py-4 lg:py-10 flex flex-col md:flex-row md:justify-between gap-5 before:absolute before:content-[""] before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-gradient-to-b before:from-black before:via-white/8 before:to-black before:-z-10'>
         {/* film info */}
         <div className='flex flex-col md:flex-row gap-5'>
-          <img src={film.smallpost} className='w-[100px] aspect-[1/1.5]'></img>
+          <img src={ORG_IMG_URL + seatInfo?.filmid.verticalPostURL} className='w-[100px] aspect-[1/1.5]'></img>
           <div className='flex flex-col items-start '>
-              <div className='text-xl font-bold'>{film.title.toUpperCase()}</div>
-              <div className='text-gray-400'>Screen {seatMap.screen}</div>
-              <div className='text-gray-400'>{getWeekday(date)}, {formatDateShort(date)} {seatMap.time}-{calcEndTime(seatMap.time, film.duration)}</div>
+              <div className='text-xl font-bold'>{seatInfo?.filmid.title.toUpperCase()}</div>
+              <div className='text-gray-400'>Screen {seatInfo?.screen}</div>
+              <div className='text-gray-400'>{getWeekday(seatInfo?.date)}, {formatDateShort(seatInfo?.date)} {seatInfo?.time}-{calcEndTime(seatInfo?.time, seatInfo?.filmid.duration)}</div>
           </div>
         </div>
         {/* ticket number */}
@@ -84,8 +103,13 @@ function SeatSelection() {
         {/* seat map */}
         <div className='flex flex-col items-center p-2 md:p-6 gap-4 bg-white shadow-[0_0_40px_white] rounded-lg'  >
           <img className='min-w-[500px]' src='/screenImage.svg'></img>
-          <div className='text-black font-extrabold'>Screen {seatMap.screen}</div>
-          <div className={`grid grid-cols-${seatMap.col} grid-rows-${seatMap.row} min-w-[500px] w-1/3 gap-2` }>
+          <div className='text-black font-extrabold'>Screen {seatInfo?.screen}</div>
+          <div className={`grid min-w-[500px] w-1/3 gap-2`}
+              style={{
+                gridTemplateColumns: `repeat(${seatInfo?.col}, minmax(0, 1fr))`,
+                gridTemplateRows: `repeat(${seatInfo?.row}, minmax(0, 1fr))`,
+              }}          
+          >
             {
               Object.keys(seatMap.seat).map((row) => {
                 return seatMap.seat[row].map((seat) => {
@@ -116,7 +140,11 @@ function SeatSelection() {
           </div>
           <div className='w-full h-1 pt-3 border-b-1'></div>
           <div className='font-bold text-xl py-2 text-end'>Total amount: {Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100}</div>
-          <Button disabled={Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100 === 0} className='ml-auto font-bold text-xl py-2 w-35 h-10 cursor-pointer'>CHECK OUT</Button>
+          <Button 
+            onClick={checkout}
+            disabled={Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100 === 0} 
+            className='ml-auto font-bold text-xl py-2 w-35 h-10 cursor-pointer'
+          >CHECK OUT</Button>
         </div>
       </div>
     </div>

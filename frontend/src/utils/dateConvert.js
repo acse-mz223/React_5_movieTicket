@@ -17,6 +17,7 @@ export function formatDateShort(dateString) {
 // input: "12:30", 120
 // reuturn: "14:30"
 export function calcEndTime(startTime, durationMins) {
+  if (!startTime || !durationMins) return null
   // Split start time
   const [hours, minutes] = startTime.split(':').map(Number);
   

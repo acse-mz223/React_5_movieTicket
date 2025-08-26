@@ -9,7 +9,7 @@ function MovieDetail() {
   // def
   const [film, setFilm] = useState()
   const [recommand, setRecommand] = useState()
-  console.log(film)
+  console.log("filmDtail:",film)
   // nav
   let navigate = useNavigate()
   // get the id of the film
@@ -37,14 +37,14 @@ function MovieDetail() {
     }
     fetchFilmDetailById()
     fetchRandom4Film()
-  },[])
+  },[id])
   // return 
   return (
     <div className='w-full pt-30 '>
       {/* booking */}
       <div className='px-5 md:px-20 lg:px-40 flex flex-col md:flex-row gap-8 md:gap-12 justify-center'>
           {/* post */}
-          <img src={ORG_IMG_URL + film.verticalPostURL} className='w-35 h-50 object-cover object-center'></img>
+          <img src={ORG_IMG_URL + film?.verticalPostURL} className='w-35 h-50 object-cover object-center'></img>
           {/* info */}
           <div className='flex flex-col items-start gap-3 w-full'>
               {/* basic info */}

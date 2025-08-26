@@ -1,4 +1,5 @@
 import Film from "../models/film.model.js"
+import Showtime from "../models/showtime.model.js"
 
 export async function FetchRandomFilm(req, res) {
     try{
@@ -15,5 +16,20 @@ export async function FetchRandomFilm(req, res) {
     }catch(error){
         console.log("fetch random film without showtime failed:", error)
         res.status(500).json({success:false, message:"Internal server: FetchRandomFilm error"})  
+    }
+}
+
+export async function FetchShowtimeByShowtimeId(req, res) {
+    try{
+        // get params
+        const id = req.params.id
+        // fetch
+        const result = await Showtime.findById(id).populate("filmid", "title verticalPostURL duration")
+        // return 
+        console.log("fetch showtime by showtime id successfully!")
+        res.status(201).json({success: true, content:result}) 
+    }catch(error){
+        console.log("fetch showtime by showtime id failed:", error)
+        res.status(500).json({success:false, message:"Internal server: FetchShowtimeByShowtimeId error"})  
     }
 }

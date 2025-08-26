@@ -45,7 +45,7 @@ export async function addShowtime(req, res) {
         }
         // check is showtime exist?
         const showtimeResult = await Showtime.findOne({
-            filmid: filmId,
+            filmid: filmresult._id,
             screen: screenNumber,
             date: date,
             time: time
@@ -53,7 +53,7 @@ export async function addShowtime(req, res) {
         if (showtimeResult) res.status(500).json({success:false, message:"Internal server : the showtime all ready exist"})
         // if not: add showtime
         const newshowtime = new Showtime({
-            filmid: filmId,
+            filmid: filmresult._id,
             screen: screenNumber,
             date: date,
             time: time
