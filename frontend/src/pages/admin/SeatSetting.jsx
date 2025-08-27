@@ -144,9 +144,9 @@ function SeatSetting() {
                     <div className='flex flex-row w-full overflow-scroll'>
                       {seatmap?.map((map) =>{
                         return (
-                          <div onClick={() => setSeatmapShowing(map)} className={`group border-1 border-white rounded-lg p-3 hover:bg-primary hover:border-primary transition-all cursor-pointer ${map.number === seatmapShowing.number? "bg-primary-dull border-none border-primary-dull ": null}`}>
+                          <div onClick={() => setSeatmapShowing(map)} className={`group border-1 border-white rounded-lg p-3 hover:bg-primary hover:border-primary transition-all cursor-pointer ${map.number === seatmapShowing?.number? "bg-primary-dull border-none border-primary-dull ": null}`}>
                             <div>MapLayout {map.number}</div>
-                            <div className={`text-xs text-gray-400 text-right group-hover:text-white ${map.number === seatmapShowing.number? "text-white": null}`}>Capacity {map.capacity}</div>
+                            <div className={`text-xs text-gray-400 text-right group-hover:text-white ${map.number === seatmapShowing?.number? "text-white": null}`}>Capacity {map.capacity}</div>
                           </div>
                         )
                       })}

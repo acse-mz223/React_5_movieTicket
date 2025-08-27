@@ -12,7 +12,7 @@ function SeatLayout({seatmap}) {
   // return     
   if (!seatmap) return <div></div>
   return (
-    <div className='flex flex-col items-center p-2 md:p-6 gap-4 bg-white rounded-lg scale-100'  >
+    <div className='flex flex-col items-center p-2 md:p-6 gap-4 bg-white rounded-lg ' >
         <img className='min-w-[300px]' src='/screenImage.svg'></img>
         <div className={`grid min-w-[350px] gap-1`}
             style={{
