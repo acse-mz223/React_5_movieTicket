@@ -28,13 +28,15 @@ import { calcEndTime, formatDateShort, getWeekday } from '@/utils/dateConvert'
 
 
 
-function SettingDialog({film}) {
+function SettingDialog({film, screen}) {
     // def
     console.log("filmid:", film.id)
     const [showtime, setShowtime] = useState()
     const [screenNumber,setScreenNumber] = useState()
     console.log("showtime:", showtime, "screenNumber", screenNumber)
     const [submitLoading, setSubmitLoading] = useState(false)
+    // fetch screen  -> i move it to the filmsetting page
+    console.log("screen:", screen)
     // submit showtime
     async function submitShowtime(filmId) {
         // critiria
@@ -61,21 +63,21 @@ function SettingDialog({film}) {
     }   
     // get film info and show days
     function TimetableBackend({filmid}) { 
-    // def
-    const [film, setFilm] = useState()  
-    // fetch data   
-    useEffect(() =>{
-        async function fetchMovieDetailById() {
-            const result = await axios.get(`/api/backend/movieDetail/${filmid}`)
-            setFilm(result.data.content)
-        }
-        fetchMovieDetailById()
-    },[])
-    // return -> null
-    if (!film) {
-        return (
-            <div className='text-gray-400'>No Showtime Yet...</div>
-        )
+        // def
+        const [film, setFilm] = useState()  
+        // fetch data   
+        useEffect(() =>{
+            async function fetchMovieDetailById() {
+                const result = await axios.get(`/api/backend/movieDetail/${filmid}`)
+                setFilm(result.data.content)
+            }
+            fetchMovieDetailById()
+        },[])
+        // return -> null
+        if (!film) {
+            return (
+                <div className='text-gray-400'>No Showtime Yet...</div>
+            )
     }
     // return 
     return (
@@ -145,19 +147,20 @@ function SettingDialog({film}) {
                 <div className='font-medium text-xl pb-4'>ADD NEW SHOWTIME</div>
                 <div className='grid grid-cols-[100px_auto] gap-y-4 items-center'>
                     <div>Time:</div>
-                    <input className="font-extralight text-sm w-[180px] p-2 border-1 rounded-lg" type="datetime-local" value={showtime} onChange={(e) => setShowtime(e.target.value)} />
+                    <input className="font-extralight text-sm w-[180px] p-2 border-1 rounded-lg stroke-white text-white" type="datetime-local" value={showtime} onChange={(e) => setShowtime(e.target.value)} />
                     <div>Screen:</div>
                     <Select onValueChange={(val) => setScreenNumber(val)} value={screenNumber}>
                         <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="0" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="1">Number 1</SelectItem>
-                        <SelectItem value="2">Number 2</SelectItem>
-                        <SelectItem value="3">Number 3</SelectItem>
-                        <SelectItem value="4">Number 4</SelectItem>
-                        <SelectItem value="5">Number 5</SelectItem>
-                        <SelectItem value="6">Number 6</SelectItem>
+                            {
+                                screen?.map((screen) =>{
+                                    return(
+                                        <SelectItem value={screen.screen}>Number {screen.screen}</SelectItem>
+                                    )
+                                })
+                            }
                         </SelectContent>
                     </Select>                                        
                 </div>

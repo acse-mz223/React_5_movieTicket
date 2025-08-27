@@ -1,4 +1,5 @@
 import Film from "../models/film.model.js"
+import Screen from "../models/screen.model.js"
 import Showtime from "../models/showtime.model.js"
 
 export async function FetchRandomFilm(req, res) {
@@ -31,5 +32,20 @@ export async function FetchShowtimeByShowtimeId(req, res) {
     }catch(error){
         console.log("fetch showtime by showtime id failed:", error)
         res.status(500).json({success:false, message:"Internal server: FetchShowtimeByShowtimeId error"})  
+    }
+}
+
+export async function FetchScreenByScreenNumber(req, res) {
+    try{
+        // get params
+        const number = req.params.number
+        // fetch
+        const result = await Screen.findOne({screen: number}).populate("seatmap")
+        // return 
+        console.log("fetch screen by screen number successfully!")
+        res.status(201).json({success: true, content:result}) 
+    }catch(error){
+        console.log("fetch screen by screen number failed:", error)
+        res.status(500).json({success:false, message:"Internal server: FetchScreenByScreenNumber error"})  
     }
 }

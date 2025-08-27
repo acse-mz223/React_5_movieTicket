@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { ORG_IMG_URL } from '@/utils/constants'
 import { calcEndTime, formatDateShort, getWeekday } from '@/utils/dateConvert'
 import { seats } from '@/utils/theatre_seat_map'
+import { useClerk, useUser } from '@clerk/clerk-react'
 import axios from 'axios'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -9,27 +10,31 @@ import { useParams } from 'react-router-dom'
 
 
 function SeatSelection() {
-  // def
-  const [selectedseat, setselectedSeat] = useState([])   // [id, type, price]
-  const [seatNumber, setSeatNumber] = useState(1)
-  const [seatInfo, setSeatInfo] = useState()
-  console.log("SeatInfo:", seatInfo)
+  // def -> seat
+  const [selectedseat, setselectedSeat] = useState([])   // array of [id, type, price]
+  const [seatNumber, setSeatNumber] = useState(1) // ticket number
+  const [showtimeInfo, setShowtimeInfo] = useState() // showtime info
+  const [screenInfo, setScreenInfo] = useState() // seatmap info
+  // def -> user
+  const user = useUser()
+  const clerk = useClerk()
   // params
   const {showtimeid} = useParams()
   // fetch 
   useEffect(() =>{
-    async function fetchShowtimeByShowtimeId() {
+    // showtime
+    async function fetchShowtimeByShowtimeIdAndScreenByScreenNumber() {
       try{
-        const result = await axios.get(`/api/frontend/showtime/${showtimeid}`)
-        setSeatInfo(result.data.content)
+        const showtimeResult = await axios.get(`/api/frontend/showtime/${showtimeid}`)
+        setShowtimeInfo(showtimeResult.data.content)
+        const screenResult = await axios.get(`/api/frontend/screen/${showtimeResult.data.content.screen}`)
+        setScreenInfo(screenResult.data.content)
       } catch(error){
-        console.log("fetch showtime by showtime id failed:", error)
+        console.log("fetch showtime by showtime id + screen by screen number failed:", error)
       }
-    }
-    fetchShowtimeByShowtimeId()
+    }  
+    fetchShowtimeByShowtimeIdAndScreenByScreenNumber()
   },[])
-  // seat map
-  let seatMap = seats
   // seat color map
   let BookedColor = {
     "super_saver": "bg-[#e96366]/70 border-none",
@@ -74,7 +79,22 @@ function SeatSelection() {
   }
   // check out function
   async function checkout() {
-    
+    try{
+      // log in 
+      if (!user.isSignedIn) {
+        console.log("sign up first!")
+        clerk.openSignIn()
+      }
+      else {
+        // payment
+        // save the book info into showtime 
+        // save the book info into user
+      }
+
+      console.log("checkout successfully!")
+    }catch(error){
+      console.log("checkout failed:",error)
+    }
   }
   // return 
   return (
@@ -83,11 +103,11 @@ function SeatSelection() {
       <div className='relative px-5 md:px-20 lg:px-40 py-4 lg:py-10 flex flex-col md:flex-row md:justify-between gap-5 before:absolute before:content-[""] before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-gradient-to-b before:from-black before:via-white/8 before:to-black before:-z-10'>
         {/* film info */}
         <div className='flex flex-col md:flex-row gap-5'>
-          <img src={ORG_IMG_URL + seatInfo?.filmid.verticalPostURL} className='w-[100px] aspect-[1/1.5]'></img>
+          <img src={ORG_IMG_URL + showtimeInfo?.filmid.verticalPostURL} className='w-[100px] aspect-[1/1.5]'></img>
           <div className='flex flex-col items-start '>
-              <div className='text-xl font-bold'>{seatInfo?.filmid.title.toUpperCase()}</div>
-              <div className='text-gray-400'>Screen {seatInfo?.screen}</div>
-              <div className='text-gray-400'>{getWeekday(seatInfo?.date)}, {formatDateShort(seatInfo?.date)} {seatInfo?.time}-{calcEndTime(seatInfo?.time, seatInfo?.filmid.duration)}</div>
+              <div className='text-xl font-bold'>{showtimeInfo?.filmid.title.toUpperCase()}</div>
+              <div className='text-gray-400'>Screen {showtimeInfo?.screen}</div>
+              <div className='text-gray-400'>{getWeekday(showtimeInfo?.date)}, {formatDateShort(showtimeInfo?.date)} {showtimeInfo?.time}-{calcEndTime(showtimeInfo?.time, showtimeInfo?.filmid.duration)}</div>
           </div>
         </div>
         {/* ticket number */}
@@ -103,23 +123,21 @@ function SeatSelection() {
         {/* seat map */}
         <div className='flex flex-col items-center p-2 md:p-6 gap-4 bg-white shadow-[0_0_40px_white] rounded-lg'  >
           <img className='min-w-[500px]' src='/screenImage.svg'></img>
-          <div className='text-black font-extrabold'>Screen {seatInfo?.screen}</div>
+          <div className='text-black font-extrabold'>Screen {showtimeInfo?.screen}</div>
           <div className={`grid min-w-[500px] w-1/3 gap-2`}
               style={{
-                gridTemplateColumns: `repeat(${seatInfo?.col}, minmax(0, 1fr))`,
-                gridTemplateRows: `repeat(${seatInfo?.row}, minmax(0, 1fr))`,
+                gridTemplateColumns: `repeat(${screenInfo?.seatmap.col}, minmax(0, 1fr))`,
+                gridTemplateRows: `repeat(${screenInfo?.seatmap.row}, minmax(0, 1fr))`,
               }}          
           >
             {
-              Object.keys(seatMap.seat).map((row) => {
-                return seatMap.seat[row].map((seat) => {
-                  return (
-                    <div key={seat.id} 
-                        className={`size-4 border-1 ${borderColor[seat.type]} rounded-b-lg ${seat.status ==="none"? 'invisible':null}  ${seat.status === "booked"? `${BookedColor[seat.type]} pointer-events-none cursor-not-allowed`:`cursor-pointer ${hoverColor[seat.type]}`} ${selectedseat.some((item) => item[0] === seat.id)? selectedColor[seat.type]:null}`}
-                        onClick={() => toggleSeat(seat.id, seat.type, seat.price)} >
-                    </div>
-                  )
-                })
+              screenInfo?.seatmap.seatmap.map((seat) => {
+                return (
+                  <div key={seat.row + seat.number} 
+                      className={`size-4 border-1 ${borderColor[seat.type]} rounded-b-lg ${seat.status === "none"? 'invisible':null}  ${showtimeInfo?.bookedseat?.includes(seat.row + seat.number)? `${BookedColor[seat.type]} pointer-events-none cursor-not-allowed`:`cursor-pointer ${hoverColor[seat.type]}`} ${selectedseat.some((item) => item[0] === seat.row + seat.number)? selectedColor[seat.type]:null}`}
+                      onClick={() => toggleSeat(seat.row + seat.number, seat.type, seat.price)} >
+                  </div>
+                )
               })
             }
           </div>

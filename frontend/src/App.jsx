@@ -12,6 +12,7 @@ import Dashboard from "./pages/admin/Dashboard"
 import DataAnalysis from "./pages/admin/DataAnalysis"
 import Showing from "./pages/admin/Showing"
 import FilmSetting from "./pages/admin/FilmSetting"
+import SeatSetting from "./pages/admin/SeatSetting"
 
 function App() {
   // admin
@@ -32,6 +33,7 @@ function App() {
           <Route path="showing" element={<Showing/>} />
           <Route path="filmsetting" element={<FilmSetting/>} />
           <Route path="dataanalysis" element={<DataAnalysis/>} />
+          <Route path="seatsetting" element={<SeatSetting/>} />
         </Route>
       </Routes>
       {isAdmin? null : <Footer/>}

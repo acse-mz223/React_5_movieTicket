@@ -1,5 +1,4 @@
 import Titilebar from '@/components/Titilebar'
-import { Button } from '@/components/ui/button'
 import { ORG_IMG_URL, W185_IMG_URL } from '@/utils/constants'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -9,7 +8,7 @@ import SettingDialog from '@/components/SettingDialog'
 function FilmSetting() {
   // set 
   const [filmShowing, setFilmShwoing] = useState()
-
+  const [screen, setScreen] = useState()
   // fetch 
   useEffect(() => {
     async function fetchShowing() {
@@ -21,6 +20,16 @@ function FilmSetting() {
             console.log("fetchShowing error:", error)
         }
     }
+    async function fetchScreen(){
+        try{
+            const screenResult = await axios.get("/api/backend/screen")
+            setScreen(screenResult.data.content)
+            console.log("fetchScreen successfully!")
+        }catch(error){
+            console.log("fetchScreen failed:", error)
+        }
+    }
+    fetchScreen()    
     fetchShowing()
   },[])
   return (
@@ -47,7 +56,7 @@ function FilmSetting() {
                               </div>
                             </div>                              
                             {/* dialog */}
-                            <SettingDialog film={film}/>
+                            <SettingDialog film={film} screen={screen}/>
                         </div> 
                     )
                 })

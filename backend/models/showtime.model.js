@@ -6,8 +6,6 @@ const showtimeSchema = new Schema({
     screen: { type: Number, required: true },
     date: { type: String, required: true },
     time: { type: String, required: true },
-    row: { type: Number, required: true, default:32 },
-    col: { type: Number, required: true, default:16 },
     bookedseat: [String] 
 }, { timestamps: true })
 

@@ -1,5 +1,8 @@
+import { Types } from "mongoose";
 import Film from "../models/film.model.js";
 import Global from "../models/global.model.js";
+import Screen from "../models/screen.model.js";
+import Seatmap from "../models/seatmap.model.js";
 import Showtime from "../models/showtime.model.js";
 import tmdbFetchFunc from "../service/tmdb.service.js";
 import { shwotimetodatetime } from "../utils/showtimetodatetime.js";
@@ -123,6 +126,53 @@ export async function heroSetting(req, res) {
         res.status(500).json({success:false, message:"Internal server: heroSetting error"})        
     }
 }
+
+export async function fetchAllScreen(req, res) {
+    try{
+        // fetch 
+        const result = await Screen.find().populate("seatmap", "number id")
+        // return 
+        console.log("fetch all screen docs successfully!")
+        res.status(201).json({success: true, content:result}) 
+    }catch(error){
+        console.log("fetch all screen docs failed:", error)
+        res.status(500).json({success:false, message:"Internal server: fetchAllScreen error"})        
+    }
+}
+
+export async function fetchAllSeatmap(req, res){
+    try{
+        // fetch
+        const result = await Seatmap.find()
+        // return 
+        console.log("fetch all seatmap successfully!")
+        res.status(201).json({success: true, content: result}) 
+    }catch(error){
+        console.log("fetch all seatmap failed:", error)
+        res.status(500).json({success:false, message:"Internal server: fetchAllSeatmap error"})        
+    }
+}
+
+
+export async function addNewScreen(req, res){
+    try{
+        // parmas
+        const {screen, seatmap} = req.body
+        // fetch
+        const newscreen = new Screen({
+            screen: Number(screen),
+            seatmap: new Types.ObjectId(seatmap)
+        })
+        await newscreen.save()
+        // return 
+        console.log("add new screen successfully!")
+        res.status(201).json({success: true}) 
+    }catch(error){
+        console.log("add new screen failed:", error)
+        res.status(500).json({success:false, message:"Internal server: addNewScreen error"})        
+    }
+}
+
 
 export async function fetchMovieDetailfromtmdb(){
 

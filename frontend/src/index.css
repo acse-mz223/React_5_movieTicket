@@ -137,3 +137,7 @@ body{
     --color-primary: #f84565;
     --color-primary-dull: #D63854;
 }
+
+.no-scrollbar{
+    scrollbar-width: none;
+}

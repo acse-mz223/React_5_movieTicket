@@ -1,12 +1,8 @@
 import { model, Schema } from "mongoose";
 
-const seatmaSchema = new Schema({
-    Screen: Number,
-    seatmap: [seatSchema]   
-})
-
 const seatSchema = new Schema({
-  id: { type: String, required: true },   // e.g. "A1"
+  row: { type: String, required: true },   // e.g. "A"
+  number: { type: Number, required: true }, // e.g. 1
   status: { 
     type: String, 
     enum: ["available", "booked", "none"], 
@@ -20,5 +16,13 @@ const seatSchema = new Schema({
   price: { type: Number, required: false } // price for that seat type
 });
 
-const Seatmap = model("Seatmap", seatSchema)
+const seatmapSchema = new Schema({
+    number:  {type: Number, required: true},
+    capacity: Number,
+    col: {type: Number, required: true},
+    row: {type: Number, required: true},
+    seatmap: [seatSchema]  
+})
+
+const Seatmap = model("Seatmap", seatmapSchema)
 export default Seatmap

@@ -13,6 +13,7 @@ function Dashboard() {
                 <div className='w-full flex flex-col items-center gap-2'>
                     <NavLink className={({isActive}) => isActive? "py-2 bg-primary w-full text-center cursor-pointer" :'py-2 hover:bg-primary w-full text-center cursor-pointer'} to="/admin/showing">Film showing</NavLink>
                     <NavLink className={({isActive}) => isActive? "py-2 bg-primary w-full text-center cursor-pointer" :'py-2 hover:bg-primary w-full text-center cursor-pointer'} to="/admin/filmsetting">Film set up</NavLink>
+                    <NavLink className={({isActive}) => isActive? "py-2 bg-primary w-full text-center cursor-pointer" :'py-2 hover:bg-primary w-full text-center cursor-pointer'} to="/admin/seatsetting">Seat set up</NavLink>
                     <NavLink className={({isActive}) => isActive? "py-2 bg-primary w-full text-center cursor-pointer" :'py-2 hover:bg-primary w-full text-center cursor-pointer'} to="/admin/dataanalysis">Data</NavLink>
                 </div>
             </div>

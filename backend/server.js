@@ -4,6 +4,7 @@ import { PORT } from './config/envVars.js'
 import cookieParser from 'cookie-parser'
 import backendRouter from './routes.js/backend.js'
 import frontendRouter from './routes.js/frontend.js'
+import { insertSeatmap } from './config/insertSeatmap.js'
 
 const app = express()
 
@@ -18,5 +19,8 @@ app.use("/api/frontend", frontendRouter)
 // listen
 app.listen(PORT, () => {
     console.log(`server start to liston on port ${PORT}`)
+    // connect to db
     connectToDb()
+    // insert seatmap
+    //insertSeatmap()
 })

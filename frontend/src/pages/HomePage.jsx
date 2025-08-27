@@ -19,6 +19,7 @@ function HomePage() {
             let heroid = result.data.hero[0].value
             setShowing(result.data.content)
             setHero(result.data.content.filter(item => item.filmid === heroid))
+            console.log("fetch all showing film successfully!")
         } catch(error){
             console.log("fetch all showing film failed:", error)
         }
