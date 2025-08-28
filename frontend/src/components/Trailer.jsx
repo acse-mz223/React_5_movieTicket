@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from './ui/button'
-import { ArrowLeft, ArrowLeftCircleIcon, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowLeftCircleIcon, ArrowRight, PlayCircleIcon, PlayIcon } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -43,7 +43,8 @@ function TrailerOne({film}) {
                         <div className='text-gray-400 pt-1 tracking-tighter leading-5'>{film?.intro.slice(0,140)}{film?.intro.length>140? "...":null}</div>
                     </div>
                     <img src={ORG_IMG_URL + film?.horizontalPostURL} className='w-[280px] h-[160px] object-contain rounded-2xl bg-gray-900 top-1/2 left-1/2 group-hover:scale-120 transition-all duration-300 shadow-lg group-hover:z-30 z-0'/>
-                    <div className='pt-2 text-md font-light -z-20 transition-opacity opacity-100 duration-1000 group-hover:opacity-0 group-hover:duration-0'>{film?.title.toUpperCase()}</div>            
+                    <div className='pt-2 text-md font-light w-full text-center -z-20 transition-opacity opacity-100 duration-1000 group-hover:opacity-0 group-hover:duration-0'>{film?.title.toUpperCase()}</div>     
+                    <PlayCircleIcon className='absolute stroke-gray-200 size-8 left-[50%] -translate-x-1/2 top-[28%] translate-y-1/2 opacity-0 scale-0 group-hover:opacity-90 group-hover:scale-100 z-100 transition-all'/>       
                 </div>
             </DialogTrigger>
                 <DialogContent className="bg-gray-900 p-0 pt-4 border-0 max-w-[800px]">
@@ -53,8 +54,8 @@ function TrailerOne({film}) {
                     </DialogHeader>
                     <div>
                         { trailer?
-                        <ReactPlayer width='auto' height='400px' src={"https://www.youtube.com/watch?v=" + trailer[0].key} />:
-                        <div className='w-full flex justify-center items-center text-gray-400 text-2xl'>No resources</div>
+                        <ReactPlayer width='auto' height='400px' playing={true} src={"https://www.youtube.com/watch?v=" + trailer[0].key} />:
+                        <div className='w-full h-[400px] flex justify-center items-center text-gray-400 text-2xl'>No resources</div>
                         }
                     </div>
                     <div className='py-2 md:py-6 px-4 md:px-10 flex flex-col gap-4 md:gap-5'>

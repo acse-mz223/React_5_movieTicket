@@ -6,7 +6,7 @@ const showtimeSchema = new Schema({
     screen: { type: Number, required: true },
     date: { type: String, required: true },
     time: { type: String, required: true },
-    bookedseat: [String] 
+    bookedseat: [{ type:Schema.Types.ObjectId, ref:"Ticket"}]  
 }, { timestamps: true })
 
 const Showtime = model("Showtime", showtimeSchema)

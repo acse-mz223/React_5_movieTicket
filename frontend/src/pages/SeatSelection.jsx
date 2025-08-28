@@ -6,6 +6,7 @@ import { useClerk, useUser } from '@clerk/clerk-react'
 import axios from 'axios'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 
 
@@ -86,8 +87,14 @@ function SeatSelection() {
         clerk.openSignIn()
       }
       else {
-        // payment
+        // payment -> here simulating a payment loading process for 5s
+        setTimeout(() => {
+          console.log("5 seconds later");
+        }, 5000);        
+        toast.success('Payment Successful!')
         // save the book info into showtime 
+        const ticketUploadResult = await axios.post("/api/frontend/ticketupdate", {showtimeid: showtimeInfo._id ,tickets: selectedseat})
+        console.log("booked seat update into db successfully!")
         // save the book info into user
       }
 
@@ -134,7 +141,7 @@ function SeatSelection() {
               screenInfo?.seatmap.seatmap.map((seat) => {
                 return (
                   <div key={seat.row + seat.number} 
-                      className={`size-4 border-1 ${borderColor[seat.type]} rounded-b-lg ${seat.status === "none"? 'invisible':null}  ${showtimeInfo?.bookedseat?.includes(seat.row + seat.number)? `${BookedColor[seat.type]} pointer-events-none cursor-not-allowed`:`cursor-pointer ${hoverColor[seat.type]}`} ${selectedseat.some((item) => item[0] === seat.row + seat.number)? selectedColor[seat.type]:null}`}
+                      className={`size-4 border-1 ${borderColor[seat.type]} rounded-b-lg ${seat.status === "none"? 'invisible':null}  ${showtimeInfo?.bookedseat?.flatMap(cur => cur.seat).includes(seat.row + seat.number)? `${BookedColor[seat.type]} pointer-events-none cursor-not-allowed`:`cursor-pointer ${hoverColor[seat.type]}`} ${selectedseat.some((item) => item[0] === seat.row + seat.number)? selectedColor[seat.type]:null}`}
                       onClick={() => toggleSeat(seat.row + seat.number, seat.type, seat.price)} >
                   </div>
                 )
@@ -148,7 +155,7 @@ function SeatSelection() {
           <div className='flex flex-col gap-4 overflow-y-scroll'>
             {selectedseat.map((item) => {
               return (
-                <div className='pl-4 md:pl-8 flex flex-row gap-4 md:gap-6'>
+                <div className='pl-4 md:pl-8 flex flex-row gap-4 md:gap-6' key={item[0]}>
                   <div>Number: {item[0]}</div>
                   <div>Type: {item[1]}</div>
                   <div>Price: {item[2]}</div>

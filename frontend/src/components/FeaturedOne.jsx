@@ -12,7 +12,7 @@ function FeaturedOne({film}) {
         {/* info */}
         <div className='flex flex-col items-start gap-3'>
             {/* basic info */}
-            <div onClick={() => {navigate(`/movie/${1234}`); scrollTo(0,0)}} className='text-2xl cursor-pointer'>{film.title}</div>
+            <div onClick={() => {navigate(`/movie/${film?.filmid}`); scrollTo(0,0)}} className='text-2xl cursor-pointer'>{film.title}</div>
             <div className='font-light text-md'>{film.intro}</div>
             <div className='grid grid-cols-1 md:grid-cols-[150px_auto]'>
                 <div>Starring</div>
