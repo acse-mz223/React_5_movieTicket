@@ -3,6 +3,7 @@ import { model, Schema } from "mongoose";
 const ticketSchema = new Schema({
     showtime: {type:Schema.Types.ObjectId, required:true, ref:"Showtime"},
     seat: [String],
+    price: [Number],
     user: {type:Schema.Types.ObjectId,  ref:"User"}
 })
 

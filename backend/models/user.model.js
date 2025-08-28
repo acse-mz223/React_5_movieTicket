@@ -1,9 +1,8 @@
 import { model, Schema } from "mongoose";
 
 const userSchema = new Schema({
-    firstName: {type:String, require:true},
-    lastName: String,
-    email: {type:String, require:true}
+    clerkid: {type: String, required:true, unique:true},
+    ticket: [{type: Schema.Types.ObjectId, ref:"Ticket"}]
 })
 
 const User = model("User", userSchema)

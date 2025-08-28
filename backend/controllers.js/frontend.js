@@ -4,6 +4,8 @@ import Screen from "../models/screen.model.js"
 import Showtime from "../models/showtime.model.js"
 import Ticket from "../models/ticket.model.js"
 import tmdbFetchFunc from "../service/tmdb.service.js"
+import User from "../models/user.model.js"
+import { populate } from "dotenv"
 
 export async function FetchRandomFilm(req, res) {
     try{
@@ -68,26 +70,64 @@ export async function FetchTrailerById(req, res) {  // return 5 trailer at most
     }
 }
 
-export async function UpdateTicketStatus(req, res) {  // return 5 trailer at most 
+export async function UpdateTicketStatus(req, res) {  
     try{
         // get params
-        const {tickets, showtimeid} = req.body
+        const {tickets, showtimeid, price} = req.body
         const seat = tickets.map((item) => item[0])
         // create ticket docs
         const ticket = new Ticket({
             showtime: new Types.ObjectId(showtimeid),
-            seat: seat
+            seat: seat,
+            price: price
         })
         await ticket.save()
-        // fetch
+        // fetch showtime info + update booked ticket info
         const showtime = await Showtime.findById(showtimeid)
         showtime.bookedseat.push(ticket._id)
         await showtime.save()
+        // fetch user info(creat one if needed) + update booked ticket info
+        const clerkid = req.auth().userId
+        let userResult = await User.findOne({clerkid: clerkid})
+        if (!userResult) {
+            userResult = new User({
+                clerkid: clerkid
+            })
+        }
+        userResult.ticket.push(ticket._id)
+        await userResult.save()
+
         // return 
-        console.log("ticket status update successfully!")
+        console.log("ticket status update in showtime + user successfully!")
         res.status(201).json({success: true}) 
     }catch(error){
-        console.log("ticket status update failed:", error)
+        console.log("ticket status update in showtime + user failed:", error)
         res.status(500).json({success:false, message:"Internal server: UpdateTicketStatus error"})  
+    }
+}
+
+export async function FetchHistoryByUserId(req, res) {  
+    try{
+        // get params
+        const clerkid = req.auth().userId
+        // fetch
+        const result = await User.findOne({clerkid: clerkid}).populate({
+            path: "ticket",
+            select: "showtime seat price",
+            populate:{
+                path: "showtime",
+                select: "screen date time filmid",
+                populate:{
+                    path: "filmid",
+                    select: "title verticalPostURL horizontalPostURL"
+                }
+            }
+        })
+        // return 
+        console.log("fetch history by user id successfully!")
+        res.status(201).json({success: true, content:result}) 
+    }catch(error){
+        console.log("fetch history by user id failed:", error)
+        res.status(500).json({success:false, message:"Internal server: FetchHistoryByUserId error"})  
     }
 }

@@ -16,6 +16,7 @@ function SeatSelection() {
   const [seatNumber, setSeatNumber] = useState(1) // ticket number
   const [showtimeInfo, setShowtimeInfo] = useState() // showtime info
   const [screenInfo, setScreenInfo] = useState() // seatmap info
+  const [price, setPrice] = useState()
   // def -> user
   const user = useUser()
   const clerk = useClerk()
@@ -76,6 +77,8 @@ function SeatSelection() {
       // within limitation -> and new seat to the rear
       else setselectedSeat((pre) => [...pre, [id, type, price]])
     }
+    // calculate amount 
+    setPrice(Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100)    
 
   }
   // check out function
@@ -92,13 +95,11 @@ function SeatSelection() {
           console.log("5 seconds later");
         }, 5000);        
         toast.success('Payment Successful!')
-        // save the book info into showtime 
-        const ticketUploadResult = await axios.post("/api/frontend/ticketupdate", {showtimeid: showtimeInfo._id ,tickets: selectedseat})
-        console.log("booked seat update into db successfully!")
-        // save the book info into user
+        // save the book info into showtime + user
+        const ticketUploadResult = await axios.post("/api/frontend/ticketupdate", {showtimeid: showtimeInfo._id ,tickets: selectedseat, price:price})
+        console.log("booked seat update + user update into db successfully!")
+        console.log("checkout all procedure successfully!")
       }
-
-      console.log("checkout successfully!")
     }catch(error){
       console.log("checkout failed:",error)
     }
@@ -164,7 +165,7 @@ function SeatSelection() {
             })}
           </div>
           <div className='w-full h-1 pt-3 border-b-1'></div>
-          <div className='font-bold text-xl py-2 text-end'>Total amount: {Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100}</div>
+          <div className='font-bold text-xl py-2 text-end'>Total amount: {price}</div>
           <Button 
             onClick={checkout}
             disabled={Math.round(selectedseat.reduce((sum, item) => sum+item[2], 0)*100)/100 === 0} 

@@ -5,13 +5,15 @@ import cookieParser from 'cookie-parser'
 import backendRouter from './routes.js/backend.js'
 import frontendRouter from './routes.js/frontend.js'
 import { insertSeatmap } from './config/insertSeatmap.js'
+import { clerkMiddleware } from '@clerk/express'
 
 const app = express()
 
 app.use(express.json())  // parse body first -> can get the info in req.body
 app.use(cookieParser()) // parse cookie -> can get the info in req.cookies
+app.use(clerkMiddleware())  // using clerk for user authetification
 
-// app.use("/api/frontend", )
+
 app.use("/api/backend", backendRouter)
 app.use("/api/frontend", frontendRouter)
 
