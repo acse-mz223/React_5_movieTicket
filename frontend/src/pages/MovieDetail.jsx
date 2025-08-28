@@ -1,6 +1,7 @@
 import Timetable from '@/components/Timetable'
 import Titilebar from '@/components/Titilebar'
 import { ORG_IMG_URL } from '@/utils/constants'
+import { minsToHoursAndMins } from '@/utils/dateConvert'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -58,7 +59,7 @@ function MovieDetail() {
                   <div>Starring</div>
                   <div className='text-gray-400 font-light'>{film?.starring}</div>
                   <div>Runtime</div>
-                  <div className='text-gray-400 font-light'>{film?.duration}</div>
+                  <div className='text-gray-400 font-light'>{minsToHoursAndMins(film?.duration)}</div>
               </div>
               {/* time table */}
               <Timetable film={film} today={false} />

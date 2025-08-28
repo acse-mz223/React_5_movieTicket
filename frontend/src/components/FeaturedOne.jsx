@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Timetable from './Timetable'
 import { ORG_IMG_URL } from '@/utils/constants'
+import { minsToHoursAndMins } from '@/utils/dateConvert'
 
 function FeaturedOne({film}) {
   let navigate = useNavigate()
@@ -18,7 +19,7 @@ function FeaturedOne({film}) {
                 <div>Starring</div>
                 <div className='text-gray-400 font-light'>{film.starring}</div>
                 <div>Runtime</div>
-                <div className='text-gray-400 font-light'>{film.duration}</div>
+                <div className='text-gray-400 font-light'>{minsToHoursAndMins(film.duration)}</div>
             </div>
             {/* time table */}
             <Timetable film={film} today={true}/>

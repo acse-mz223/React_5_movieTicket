@@ -11,13 +11,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { SignIn, SignInButton, UserButton, useUser } from '@clerk/clerk-react'
+import { SignIn, SignInButton, useClerk, UserButton, useUser } from '@clerk/clerk-react'
 
 function Navbar() {
   // nav
   let navigate = useNavigate()
   // user
   let user = useUser()
+  const clerk = useClerk()
   // sheet
   const [open, setOpen] = React.useState(false)
   return (
@@ -26,11 +27,16 @@ function Navbar() {
       <img onClick={() => {navigate(`/`); scrollTo(0,0)}} src='./donuts-white.svg' className='w-12 h-12 min-w-12 min-h-12'></img>
       {/* menu */}
       <div className='max-md:hidden font-medium flex md:justify-between md:gap-6 lg:gap-8 md:items-center md:px-6 lg:px-8 md:py-2 md:rounded-full md:border-1 md:border-white/50 bg-white/20 backdrop-blur'>
-        <div onClick={() => {navigate(`/`); scrollTo(0,0)}} className='hover:text-primary transition'>Home</div>
-        <div onClick={() => {navigate(`/Movies`); scrollTo(0,0)}} className='hover:text-primary transition'>Movies</div>
-        <div onClick={() => {navigate(`/Theaters`); scrollTo(0,0)}} className='hover:text-primary transition'>Theaters</div>
-        <div onClick={() => {navigate(`/Releases`); scrollTo(0,0)}} className='hover:text-primary transition'>Releases</div>
-        <div onClick={() => {navigate(`/Favourite`); scrollTo(0,0)}} className='hover:text-primary transition'>Favourite</div>
+        <div onClick={() => {navigate(`/`); scrollTo(0,0)}} className='hover:text-primary transition cursor-pointer'>Home</div>
+        <div onClick={() => {navigate(`/movies`); scrollTo(0,0)}} className='hover:text-primary transition cursor-pointer'>Movies</div>
+        <div onClick={() => {
+          if (user.isSignedIn) {
+            navigate(`/history`)
+            scrollTo(0,0)
+          } else {
+            clerk.openSignIn()
+          }
+          }} className='hover:text-primary transition cursor-pointer'>History</div>
       </div>
       {/* search + login */}
       <div className='flex flex-around items-center gap-5'>

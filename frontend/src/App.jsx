@@ -4,7 +4,6 @@ import HomePage from "./pages/HomePage"
 import Navbar from "./components/Navbar"
 import MovieDetail from "./pages/MovieDetail"
 import SeatSelection from "./pages/SeatSelection"
-import Favourite from "./pages/Favourite"
 import { Toaster } from "react-hot-toast"
 import MoviesPage from "./pages/MoviesPage"
 import MyHistory from "./pages/MyHistory"
@@ -26,7 +25,6 @@ function App() {
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/seat/:showtimeid" element={<SeatSelection />} />
         <Route path="/history" element={<MyHistory/>} />
-        <Route path="/favourite" element={<Favourite/>} />
 
         <Route path="/admin/*" element={<Dashboard/>} >
           <Route index element={<Showing/>} />

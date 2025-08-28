@@ -21,6 +21,7 @@ function Timetable({film, today=false}) {
             {/* iterate date first  */}
             {film?.date.map((date) => { // date is a object
                 if (today && date.date!=formattedToday ) return  
+                if (date.showtime.length === 0) return
                 return (
                     <div>
                         <div className='py-4 text-primary font-extrabold'>{getWeekday(date.date)}, {formatDateShort(date.date)}</div>

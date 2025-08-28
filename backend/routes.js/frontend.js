@@ -1,6 +1,5 @@
 import express from 'express'
 import {FetchHistoryByUserId, FetchRandomFilm, FetchScreenByScreenNumber, FetchShowtimeByShowtimeId, FetchTrailerById, UpdateTicketStatus } from '../controllers.js/frontend.js'
-import { requireAuth } from '@clerk/express'
 
 const frontendRouter = express.Router()
 
