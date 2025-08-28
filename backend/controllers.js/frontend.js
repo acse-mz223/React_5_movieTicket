@@ -1,6 +1,7 @@
 import Film from "../models/film.model.js"
 import Screen from "../models/screen.model.js"
 import Showtime from "../models/showtime.model.js"
+import tmdbFetchFunc from "../service/tmdb.service.js"
 
 export async function FetchRandomFilm(req, res) {
     try{
@@ -47,5 +48,20 @@ export async function FetchScreenByScreenNumber(req, res) {
     }catch(error){
         console.log("fetch screen by screen number failed:", error)
         res.status(500).json({success:false, message:"Internal server: FetchScreenByScreenNumber error"})  
+    }
+}
+
+export async function FetchTrailerById(req, res) {  // return 5 trailer at most 
+    try{
+        // get params
+        const filmid = req.params.id
+        // fetch
+        const result = await tmdbFetchFunc(`https://api.themoviedb.org/3/movie/${filmid}/videos`)
+        // return 
+        console.log("fetch trailer by id successfully!")
+        res.status(201).json({success: true, content:result.results.filter((item) => item.type = "Trailer").slice(0,5)}) 
+    }catch(error){
+        console.log("fetch trailer by id failed:", error)
+        res.status(500).json({success:false, message:"Internal server: FetchTrailerById error"})  
     }
 }

@@ -9,7 +9,7 @@ Framework:
 install:
     - frontend/: 
         - npm init vite@latest .
-        - npm install axios react-router-dom
+        - npm install axios react-router-dom react-player
         - npm install -D tailwindcss
     - backend/:   -> its env file should store in this file 
         - npm init -y

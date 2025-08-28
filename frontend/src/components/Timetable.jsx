@@ -14,7 +14,7 @@ function Timetable({film, today=false}) {
     const formattedToday = todayDate.toISOString().split('T')[0]
   // return 
   return (
-    <div className='relative'>
+    <div className='relative w-full'>
         <Separator />
         {/* timetable */}
         <div className='flex flex-col gap-2 md:gap-5'>

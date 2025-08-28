@@ -31,7 +31,7 @@ function HomePage() {
     <div>
       <Hero film={hero}></Hero>
       <Featured films={showing}></Featured>
-      <Trailer></Trailer>
+      <Trailer films={showing}></Trailer>
     </div>
   )
 }
