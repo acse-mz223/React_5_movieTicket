@@ -11,7 +11,7 @@ function Timetable({film, today=false}) {
   let navigate = useNavigate()  
   // today?
     const todayDate = new Date();
-    const formattedToday = todayDate.toISOString().split('T')[0]
+    const formattedToday = todayDate.toLocaleDateString("en-CA")
   // return 
   return (
     <div className='relative w-full'>

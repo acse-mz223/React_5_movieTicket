@@ -146,3 +146,8 @@ API 设计:
             最后引擎搜索，找到一个blog，上面有人提供了解决方法
             发现是因为render update的一些breaking change导致的
             需要将 /* 改为 /{*splat} 
+10. 时间问题
+    - 问题: 我的homepage设置了只显示当天的movie。我在凌晨时写代码，发现当天电影不显示
+    - 解决: 
+        - 原代码: const formattedToday = todayDate.toISOString().split("T")[0]; -- 会输出0时的时间
+        - 更改: todayDate.toLocaleDateString("en-CA");  -- 输出当地时间

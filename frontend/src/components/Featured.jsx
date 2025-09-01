@@ -6,7 +6,8 @@ import Titilebar from './Titilebar'
 function Featured({films}) {
   // today
   const todayDate = new Date();
-  const formattedToday = todayDate.toISOString().split('T')[0]    
+  const formattedToday = todayDate.toLocaleDateString("en-CA")   
+  console.log("date:", formattedToday) 
   // return 
   return (
     <div className='pt-5 md:pt-10 px-5 md:px-40 w-full'>
