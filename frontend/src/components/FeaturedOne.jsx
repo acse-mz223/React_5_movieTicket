@@ -1,0 +1,32 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import Timetable from './Timetable'
+import { ORG_IMG_URL } from '@/utils/constants'
+import { minsToHoursAndMins } from '@/utils/dateConvert'
+
+function FeaturedOne({film}) {
+  let navigate = useNavigate()
+  return (
+    <div className='flex flex-col w-full md:flex-row gap-8 md:gap-12 items-start '>
+        {/* post */}
+        <img src={ORG_IMG_URL + film.verticalPostURL} className='w-35 h-50 object-cover object-center'></img>
+        {/* info */}
+        <div className='flex flex-col items-start gap-3'>
+            {/* basic info */}
+            <div onClick={() => {navigate(`/movie/${film?.filmid}`); scrollTo(0,0)}} className='text-2xl cursor-pointer'>{film.title.toUpperCase()}</div>
+            <div className='font-light text-md'>{film.intro}</div>
+            <div className='grid grid-cols-1 md:grid-cols-[150px_auto]'>
+                <div>Starring</div>
+                <div className='text-gray-400 font-light'>{film.starring}</div>
+                <div>Runtime</div>
+                <div className='text-gray-400 font-light'>{minsToHoursAndMins(film.duration)}</div>
+            </div>
+            {/* time table */}
+            <Timetable film={film} today={true}/>
+        </div>
+
+    </div>
+  )
+}
+
+export default FeaturedOne

@@ -1,0 +1,148 @@
+Framework:
+    - vite: npm create vite@latest .
+    - other depencency: npm install react-router-dom lucide-react react-hot-toast react-player 
+        - lucide: a set of SVG icons
+        - shadcn: icon
+        - prebuildUI: 现成的ui component
+    - clerk: 用户验证  -> 用于auth & identity,而不是存储用户数据，因此用户的ticket信息存储在mongodb的user collection中
+
+install:
+    - frontend/:    -> 运行: npm run dev
+        - npm init vite@latest .
+        - npm install axios react-router-dom react-player
+        - npm install -D tailwindcss
+        - npm install --save @stripe/react-stripe-js@^3.6.0 @stripe/stripe-js@^7.0.0
+
+    - backend/:     -> 运行: npm run dev
+                    -> its env file should store in this file  
+                    --> 实际上，后面deploy的时候因为选择了将frontend作为中间件嵌入到backend，因此整个文件需要.env和package来运行
+                        因此最好的方式目前是project一个npm，包含前端后端两个文件，frontend一个npm，后端使用project的npm
+                    --> 但是如果是前端后端在两个平台单独渲染，就直接frontend和backend两个文件分别npm init即可
+        - npm init -y
+        - npm install express mongoose cors dotenv
+        - npm install cookie-parser
+        - npm install @clerk/express
+        - npm install stripe --save
+
+run:
+    - backend: npm run dev <- have to config the command in package.json file
+
+deployment: - render    
+
+.env:
+    - 因为在git上不应该push任何.env文件
+    - 而这个项目我选择了将前端embed到后端中，因此前端build时需要的.env需要和后端共享
+    - 但其实最后因为前端的env都是public key所以我还是在gitignorn中删除了frontend/.env
+    - 把它上传了
+
+数据结构:
+- user
+    - id: num
+    - history:
+        - ticket_id:
+        - bought_date: "2025-8-16"
+        - showtime_id: -> title+smallpost+date+time+screen
+        - seats: [A1,A2]
+        - price: num
+- film:
+    - id: num
+    - title: str
+    - intro : str
+    - horizontalPostURL: str
+    - verticalPostURL: str
+    - duration: num
+    - director: str
+    - cast: [str]
+    - showtime: {  -- 拆成单个model？
+        date
+    } 
+- date:
+    - dare: string 
+    - shwotime: [
+        showtime
+    ]
+
+- showtime/场次
+    - row: 16
+    - col: 28
+    - screen: 5
+    - date: "2025-08-17"
+    - time: "10:00"
+    - bookedseat: [string]
+
+- seatmap/座位图
+    - screen: [Number]
+    - seat:
+        {   -> 使用harrsh表存储，方便查询
+                                                -- status: available booked none
+                                                -- type: wheelchair super_saver(6.99 红) saver(6.99 绿) regular(8.99 蓝) vip(10.49 粉) 
+            A: [
+                {id:"A1", status: "available", type: "standard", price: 10},
+                {id:"A2", status: "booked", type: "wheelchair", price: 5},
+                {id:"A3", status: "none"}
+            ]
+        }    
+
+API 设计: 
+    - "api/frontend"
+        - "/allmovies" : get all show time 
+        - "/ticket/:id" : get a secific movie timetable
+    - "api/backend"
+        - "/allmovies" : fetch all moveis that can show 
+        - "/setupmovies" : set up show time of a movies
+        - 
+# 前端调用api时可以在vite.config.js中设置将/api自动识别为port号
+
+问题: 
+1. shadcn安装
+    - 问题: 官网提供的安装步骤是vite-ts的，而我是js
+    - 解决: youtube搜视频解决
+2. sheet的使用
+    - 问题: 需要创建隐藏式menu，需要手写代码
+    - 解决: 想起之前用过shadcn的sheet，因此在官网查找并使用
+3. flex 中元素shrink导致的overflow-x-scroll无效
+    - 解决: 找到flex-shrink-0这个设置并使用
+4. 寻找存储座位信息的最好方式
+    - 问题: 需要存储每个座位的信息+座位数多，信息量大，维度多
+    - 解决: 通过hash表+chatgpt+查询pop theathre的信息
+5. route的子页面之间的跳转
+    - 问题: 使用route在父界面中进行子界面之间的跳转
+            <Link to="child1">Child 1</Link>
+            父界面写成这样，则每次点击不同link，最后的url会变成/parent/child1/childX/childXX
+            而不是/parent/child2
+    - 解决: 使用 absolute path
+            <Link to="/parent/child1">Child 1</Link>
+6. 后端访问
+    - 问题：无论从前端还是postman都无法访问后端，报错localhost refused to connect
+    - 解决：port 从5000改成4000， 因为  Some ports (like 5000, 3306, 1433, etc.) are commonly used by databases or system services, so firewalls/antivirus may block them by default.          
+7. 数据存储问题
+    - 问题: 在一个film新的date被创建的时候，同时被存入的showtime不会被保存。但是次date下的第二次的showtime会被保存
+    - 代码：
+        let targetDate = filmresult.date.find(d => d.date === date)
+        if (!targetDate) {
+            targetDate = { date: date, showtime: [] }
+            filmresult.date.push(targetDate)
+        }
+        targetDate.showtime.push(newshowtime._id)
+        await filmresult.save()        
+    - 原因: 因为targetDate虽然是被push到了filresult里面，local reference (targetDate) is still the plain object — not the actual subdocument inside filmresult. So when you do targetDate.showtime.push(...), you’re modifying the wrong object.
+    - 解决:
+        let targetDate = filmresult.date.find(d => d.date === date)
+        if (!targetDate) {
+            targetDate = { date: date, showtime: [newshowtime._id] }
+            filmresult.date.push(targetDate)
+        }
+        else  targetDate.showtime.push(newshowtime._id) 
+        await filmresult.save()    
+8. stripe 代码问题
+    - 问题: 在使用stripe的官网的代码的时候会出现频繁报错
+    - 解决: 发现checkout的flow有两种，一种是页面式的，那就使用checkout session这个flow
+            还有一种是checkout嵌入式的，相当于checkout界面是一个element，那就需要使用paymentintent这个flow
+            两种的前端和后端的使用的stripe的method是不一样的
+9. render 部署问题
+    - 问题: build通过后，部署时一直报错
+        [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️ enable debug logging with { debug: true } /opt/render/project/src/node_modules/path-to-regexp/dist/index.js:73 throw new TypeError(Missing parameter name at ${i}: ${DEBUG_URL}); ^ TypeError: Missing parameter name at 2: https://git.new/pathToRegexpError
+    - 解决: 查看render doc的建议没用，问chatgpt没用
+            最后引擎搜索，找到一个blog，上面有人提供了解决方法
+            发现是因为render update的一些breaking change导致的
+            需要将 /* 改为 /{*splat} 
