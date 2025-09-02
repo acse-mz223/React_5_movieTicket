@@ -43,13 +43,13 @@ A full-stack theatre ticket booking application with separate **client** and **a
 #### 📄 Film Detail Page
 - **Function:** See detailed information about a film, including director, casts and all available showtimes.  
 - **Screenshot:**  
-  ![Film Detail Page](assets/filmDetails.png.png)  
+  ![Film Detail Page](assets/filmDetails.png)  
 
 #### 💺 Seat Selection & Checkout Page
 - **Function:** Choose your seats, view pricing, and complete secure payments via Stripe.  
 - **Screenshot:**  
-  ![Seat Selection & Checkout Page](assets/seatSelect_1.png.png)  
-  ![Seat Selection & Checkout Page](assets/seatSelect_2.png.png)  
+  ![Seat Selection & Checkout Page](assets/seatSelect_1.png)  
+  ![Seat Selection & Checkout Page](assets/seatSelect_2.png)  
 
 #### 📜 History Page
 - **Function:** View past bookings and ticket history for the logged-in user.  
