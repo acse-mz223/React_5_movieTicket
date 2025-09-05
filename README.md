@@ -1,6 +1,7 @@
 # 🎭 Theatre Ticket Booking System  
 
 ## [🌐 Live Demo Here!!!! <- Click me](https://react-5-movieticket.onrender.com/)  
+## add /admin to browse admin dashboard. You can set up seatLayout Showtime and so on there !
 
 A full-stack theatre ticket booking application with separate **client** and **admin** sides. Built using **React (Vite, Tailwind)** for the frontend, **Express.js** for the backend, **MongoDB (Mongoose)** as the database, **Clerk** for authentication, and **Stripe** for payments.  
 
